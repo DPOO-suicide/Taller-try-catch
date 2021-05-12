@@ -48,6 +48,39 @@ public class Libreria {
 		this.categorias = cargarCategorias(nombreArchivoCategorias);
 		this.catalogo = cargarCatalogo(nombreArchivoLibros);
 	}
+	
+	//se encarga de casi todo el rq2
+	
+	public int cambiarNombreCategoria(String nombreNuevaCategoria,String nombreCategoriaCambiar ) {
+		if (contieneCategoria(nombreCategoriaCambiar)) {
+			if (!contieneCategoria(nombreNuevaCategoria)) {		
+				for (Categoria categoria:categorias) {
+					if (categoria.getNombre().equals(nombreCategoriaCambiar))
+					{
+						categoria.cambiaarNombre(nombreNuevaCategoria);
+						return 2;
+					}
+				
+				}
+				return 6;
+			}
+			else {
+				return 1;
+			}
+		}
+		else {
+			return 0;
+		}
+	}
+	public boolean contieneCategoria(String nombreCategoria) {
+		for (Categoria categoria:categorias) {
+			if (categoria.getNombre().equals(nombreCategoria))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// ************************************************************************
 	// Métodos para consultar los atributos
