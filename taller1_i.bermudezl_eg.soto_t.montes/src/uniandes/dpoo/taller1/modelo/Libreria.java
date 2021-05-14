@@ -460,9 +460,9 @@ public class Libreria {
 		SomeAuthorsNotFoundException exception = new SomeAuthorsNotFoundException("Algunos autores digitados no existen");
 		for (String autor : autores) {
 			if (existeAutorEnCatalogo(autor)) {
-				exception.addAuthorNotFound(autor);
-			} else {
 				exception.addAuthorFound(autor);
+			} else {
+				exception.addAuthorNotFound(autor);
 			}
 		}
 		if (exception.getAuthorsNotFound().isEmpty()) { //Están todos los autores
@@ -473,18 +473,6 @@ public class Libreria {
 		} else {
 			throw exception;
 		}
-		
-		String msg = " Autores encontrados: %s\n Autores no encontrados: %s";
-		String found = "";
-		String notFound = "";
-		for (String autorSi : exception.getAuthorsFound()) {
-			found += autorSi+",";
-		} found = found.substring(0, found.length()-1);
-		for (String autorNo : exception.getAuthorsNotFound()) {
-			notFound += autorNo+",";
-		} notFound = notFound.substring(0, notFound.length()-1);
-		System.out.println(String.format(msg, found, notFound));
-		
 	}
 
 	public int getCategoriasOnCsv() {

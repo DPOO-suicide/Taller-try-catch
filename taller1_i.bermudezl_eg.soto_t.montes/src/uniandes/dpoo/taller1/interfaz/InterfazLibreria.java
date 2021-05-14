@@ -395,7 +395,7 @@ public class InterfazLibreria extends JFrame
 				String notFound = "";
 				for (String autorSi : ex.getAuthorsFound()) {
 					found += autorSi+",";
-				} found = found.substring(0, found.length()-1);
+				} found = (found=="")? "Ninguno" : found.substring(0, found.length()-1);
 				for (String autorNo : ex.getAuthorsNotFound()) {
 					notFound += autorNo+",";
 				} notFound = notFound.substring(0, notFound.length()-1);
@@ -403,8 +403,6 @@ public class InterfazLibreria extends JFrame
 				JOptionPane.showMessageDialog(this, String.format(msg, found, notFound), ex.getMessage(),
 				JOptionPane.INFORMATION_MESSAGE);
 			}
-			//	JOptionPane.showMessageDialog(this, "No se encontró un libro con ese título", "No hay libro",
-			//			JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
