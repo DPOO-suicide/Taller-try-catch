@@ -171,6 +171,7 @@ public class InterfazLibreria extends JFrame
 		{
 			libreria = new Libreria(archivo_categorias.getPath(), archivo_libros.getPath());
 			panelCategorias.actualizarCategorias(libreria.darCategorias());
+			hayMasCategorias();
 		}
 		catch (Exception e)
 		{
@@ -345,6 +346,15 @@ public class InterfazLibreria extends JFrame
 			mensaje = "Hay al menos un autor con al menos un libro en dos categorías diferentes.";
 		}
 		JOptionPane.showMessageDialog(this, mensaje, "Consulta", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void hayMasCategorias() {
+		int tamanioOnCsv = libreria.getCategoriasOnCsv();
+		Categoria[] categoriasA= libreria.darCategorias();
+		int tamanioActualCat = categoriasA.length;
+		int tamanioCatNew = (tamanioActualCat - tamanioOnCsv);
+		String mensaje = libreria.hayMasCategorias(tamanioOnCsv, tamanioActualCat, tamanioCatNew);
+		JOptionPane.showMessageDialog(this, mensaje, "Aviso", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	// ************************************************************************

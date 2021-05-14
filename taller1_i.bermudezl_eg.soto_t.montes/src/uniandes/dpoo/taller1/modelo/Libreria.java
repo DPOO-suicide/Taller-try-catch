@@ -1,6 +1,7 @@
 package uniandes.dpoo.taller1.modelo;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,6 +29,8 @@ public class Libreria {
 	 * Una lista con los libros disponibles en la librería
 	 */
 	private ArrayList<Libro> catalogo;
+	
+	private int categoriasOnCsv;
 
 	// ************************************************************************
 	// Constructores
@@ -91,7 +94,9 @@ public class Libreria {
 		String linea = br.readLine(); // Ignorar la primera línea porque tiene los títulos
 
 		linea = br.readLine();
+		int ncategoriasOnCsv=0;
 		while (linea != null) {
+			ncategoriasOnCsv++;
 			String[] partes = linea.trim().split(",");
 			String nombreCat = partes[0];
 			boolean esFiccion = partes[1].equals("true");
@@ -100,7 +105,7 @@ public class Libreria {
 			listaCategorias.add(new Categoria(nombreCat, esFiccion));
 			linea = br.readLine();
 		}
-
+		this.categoriasOnCsv=ncategoriasOnCsv;
 		br.close();
 
 		// Convertir la lista de categorías a un arreglo
@@ -173,8 +178,8 @@ public class Libreria {
 				return c;
 			}
 		}
-
-		return null;
+		Categoria catInexistente = crearCategoriaInexistente(nombreCategoria);
+		return catInexistente;
 	}
 
 	/**
@@ -187,6 +192,19 @@ public class Libreria {
 	private boolean existeArchivo(String nombreArchivo) {
 		File archivo = new File("./data/" + nombreArchivo);
 		return archivo.exists();
+	}
+	
+	private Categoria crearCategoriaInexistente(String nombreCategoria) {
+		Categoria catInexistente = new Categoria(nombreCategoria,true);
+		int tamanioNuevoCat = categorias.length+1;
+		Categoria[] catConInex = new Categoria[tamanioNuevoCat];
+		for (int i = 0; i < categorias.length; i++) {
+			catConInex[i] = categorias[i];
+		}
+		catConInex[categorias.length] = catInexistente;
+		categorias = catConInex;
+		return catInexistente;
+		
 	}
 
 	/**
@@ -379,5 +397,40 @@ public class Libreria {
 
 		return cond;
 	}
+
+	public int getCategoriasOnCsv() {
+		return categoriasOnCsv;
+	}
+	
+	public String hayMasCategorias(int tamanioOnCsv, int tamanioActualCat, int tamanioCatNew){
+		String mensaje = "Se cargaron "+ String.valueOf(tamanioCatNew)+" categorias inexistentes en el arcivo de categorias";
+		HashMap<String,Integer> categoriasInexistentes = new HashMap<String,Integer>();
+		int indice =tamanioActualCat-tamanioCatNew;
+		if (tamanioOnCsv < tamanioActualCat){
+			for (int i = indice; i < tamanioActualCat; i++) {
+				Categoria catActual = categorias[i];
+				String nombreCatActual = catActual.darNombre();
+				Integer numLibrosCatActual = Integer.valueOf(catActual.contarLibrosEnCategoria());
+				
+				categoriasInexistentes.put(nombreCatActual, numLibrosCatActual);
+			}
+		Set<String> keys = categoriasInexistentes.keySet();
+		String[] categoriasArray=keys.toArray(new String[keys.size()]);
+		for (int a = 0; a < categoriasArray.length; a++) {
+			String categoria= categoriasArray[a];
+			int cantidadLibros = categoriasInexistentes.get(categoria).intValue();
+			String libroOlibros;
+			if (cantidadLibros > 1) {
+				libroOlibros = "Libros";
+			}
+			else {
+				libroOlibros = "Libro";
+			}
+			mensaje = mensaje+ "\n" + categoria + ": " + String.valueOf(cantidadLibros)+" "+libroOlibros;
+			}
+		}
+		return mensaje;
+	}
+	
 
 }
