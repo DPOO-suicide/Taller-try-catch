@@ -260,19 +260,13 @@ public class InterfazLibreria extends JFrame
 	
 		if (nombreCategoria != null && nombreNuevo!= null)
 		{
-		
-			int estado=this.libreria.cambiarNombreCategoria(nombreNuevo, nombreCategoria);
 			
-			if (estado==0) {
-				JOptionPane.showMessageDialog(this, "No se ha encontrado la categoria a la cual se le quiere cambiar el nombre", "Error",JOptionPane.INFORMATION_MESSAGE);
+			try {
+				this.libreria.cambiarNombreCategoria(nombreNuevo, nombreCategoria);
 			}
-			else if (estado==1) {
-				JOptionPane.showMessageDialog(this, "Se encontro la categoria pero ya hay otra categoria con este nombre", "Error",JOptionPane.INFORMATION_MESSAGE);
+			catch(Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Error",JOptionPane.INFORMATION_MESSAGE);
 			}
-			else {
-				JOptionPane.showMessageDialog(this, "Se logro cambiar el nombre", "Hecho",JOptionPane.INFORMATION_MESSAGE);
-			}
-			
 			
 		}
 		

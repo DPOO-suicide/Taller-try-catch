@@ -51,25 +51,25 @@ public class Libreria {
 	
 	//se encarga de casi todo el rq2
 	
-	public int cambiarNombreCategoria(String nombreNuevaCategoria,String nombreCategoriaCambiar ) {
+	public void cambiarNombreCategoria(String nombreNuevaCategoria,String nombreCategoriaCambiar ) throws Exception {
+		if (nombreNuevaCategoria.equals("")||nombreCategoriaCambiar.equals("")) {
+			throw new Exception("Hay inputs vacios");
+		}
 		if (contieneCategoria(nombreCategoriaCambiar)) {
 			if (!contieneCategoria(nombreNuevaCategoria)) {		
 				for (Categoria categoria:categorias) {
 					if (categoria.getNombre().equals(nombreCategoriaCambiar))
 					{
 						categoria.cambiaarNombre(nombreNuevaCategoria);
-						return 2;
 					}
-				
 				}
-				return 6;
 			}
 			else {
-				return 1;
+				throw new Exception("Ya hay una categoria con ese nombre");
 			}
 		}
 		else {
-			return 0;
+			throw new Exception("No se encontro la categoria");
 		}
 	}
 	public boolean contieneCategoria(String nombreCategoria) {
