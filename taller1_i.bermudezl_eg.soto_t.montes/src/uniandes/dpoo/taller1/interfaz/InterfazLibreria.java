@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import uniandes.dpoo.taller1.exceptions.SomeAuthorsNotFoundException;
 import uniandes.dpoo.taller1.modelo.Categoria;
 import uniandes.dpoo.taller1.modelo.Libreria;
 import uniandes.dpoo.taller1.modelo.Libro;
@@ -148,7 +149,7 @@ public class InterfazLibreria extends JFrame
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Librería");
-		setSize(1000, 700);
+		setSize(1200, 700);
 		setVisible(true);
 	}
 
@@ -370,6 +371,39 @@ public class InterfazLibreria extends JFrame
 		JOptionPane.showMessageDialog(this, mensaje, "Consulta", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	/**
+	 * Le pide al usuario el título de un libro y lo busca en la librería.
+	 * 
+	 * Si existe un libro, le muestra al usuario la información del libro en el
+	 * panel 'panelLibro'.
+	 */
+	public void borrarLibrosPorAutor()
+	{
+		String autores = JOptionPane.showInputDialog(this, "Digite los autores separados por el caracter \",\"", "autor1,autor2");
+		if (autores != null)
+		{
+			try {
+				libreria.borrarLibrosPorAutor(autores.split(","));
+				panelLibros.actualizarLibros(libreria.darLibros());
+			} catch (SomeAuthorsNotFoundException ex) {
+				String msg = " Autores encontrados: %s\n Autores no encontrados: %s";
+				String found = "";
+				String notFound = "";
+				for (String autorSi : ex.getAuthorsFound()) {
+					found += autorSi+",";
+				} found = found.substring(0, found.length()-1);
+				for (String autorNo : ex.getAuthorsNotFound()) {
+					notFound += autorNo+",";
+				} notFound = notFound.substring(0, notFound.length()-1);
+				
+				JOptionPane.showMessageDialog(this, String.format(msg, found, notFound), ex.getMessage(),
+				JOptionPane.INFORMATION_MESSAGE);
+			}
+			//	JOptionPane.showMessageDialog(this, "No se encontró un libro con ese título", "No hay libro",
+			//			JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	
 	// ************************************************************************
 	// Main
 	// ************************************************************************

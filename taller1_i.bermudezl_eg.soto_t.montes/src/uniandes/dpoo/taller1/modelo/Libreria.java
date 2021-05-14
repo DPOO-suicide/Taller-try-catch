@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import uniandes.dpoo.taller1.exceptions.SomeAuthorsNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -411,6 +412,61 @@ public class Libreria {
 		}
 
 		return cond;
+	}
+	
+	private boolean existeAutorEnCatalogo(String nombreAutor) {
+		for (Libro lb : catalogo) {
+			if (lb.darAutor().equals(nombreAutor)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private ArrayList<Libro> darLibrosAutor(String nombreAutor) {
+		ArrayList<Libro> librosAutor = new ArrayList<Libro>();
+		for (Libro lb : catalogo) {
+			if (lb.darAutor().equals(nombreAutor)) {
+				librosAutor.add(lb);
+			}
+		}
+		return librosAutor;
+	}
+	
+	/**
+	 * Elimina de los libros aquellos cuyo autor está en la lista de autores
+	 * 
+	 * @param autores Nombres de los autores
+	 */
+	public void borrarLibrosPorAutor(String[] autores) throws SomeAuthorsNotFoundException{
+		SomeAuthorsNotFoundException exception = new SomeAuthorsNotFoundException("Algunos autores digitados no existen");
+		for (String autor : autores) {
+			if (existeAutorEnCatalogo(autor)) {
+				exception.addAuthorNotFound(autor);
+			} else {
+				exception.addAuthorFound(autor);
+			}
+		}
+		if (exception.getAuthorsNotFound().isEmpty()) { //Están todos los autores
+			for (String autor : autores) {
+				ArrayList<Libro> librosAutor = darLibrosAutor(autor);
+				catalogo.removeAll(librosAutor);
+			}
+		} else {
+			throw exception;
+		}
+		
+		String msg = " Autores encontrados: %s\n Autores no encontrados: %s";
+		String found = "";
+		String notFound = "";
+		for (String autorSi : exception.getAuthorsFound()) {
+			found += autorSi+",";
+		} found = found.substring(0, found.length()-1);
+		for (String autorNo : exception.getAuthorsNotFound()) {
+			notFound += autorNo+",";
+		} notFound = notFound.substring(0, notFound.length()-1);
+		System.out.println(String.format(msg, found, notFound));
+		
 	}
 
 }
