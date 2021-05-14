@@ -172,6 +172,7 @@ public class InterfazLibreria extends JFrame
 		{
 			libreria = new Libreria(archivo_categorias.getPath(), archivo_libros.getPath());
 			panelCategorias.actualizarCategorias(libreria.darCategorias());
+			hayMasCategorias(); 
 		}
 		catch (Exception e)
 		{
@@ -261,19 +262,13 @@ public class InterfazLibreria extends JFrame
 	
 		if (nombreCategoria != null && nombreNuevo!= null)
 		{
-		
-			int estado=this.libreria.cambiarNombreCategoria(nombreNuevo, nombreCategoria);
 			
-			if (estado==0) {
-				JOptionPane.showMessageDialog(this, "No se ha encontrado la categoria a la cual se le quiere cambiar el nombre", "Error",JOptionPane.INFORMATION_MESSAGE);
+			try {
+				this.libreria.cambiarNombreCategoria(nombreNuevo, nombreCategoria);
 			}
-			else if (estado==1) {
-				JOptionPane.showMessageDialog(this, "Se encontro la categoria pero ya hay otra categoria con este nombre", "Error",JOptionPane.INFORMATION_MESSAGE);
+			catch(Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Error",JOptionPane.INFORMATION_MESSAGE);
 			}
-			else {
-				JOptionPane.showMessageDialog(this, "Se logro cambiar el nombre", "Hecho",JOptionPane.INFORMATION_MESSAGE);
-			}
-			
 			
 		}
 		
@@ -369,6 +364,15 @@ public class InterfazLibreria extends JFrame
 			mensaje = "Hay al menos un autor con al menos un libro en dos categorías diferentes.";
 		}
 		JOptionPane.showMessageDialog(this, mensaje, "Consulta", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void hayMasCategorias() {
+		int tamanioOnCsv = libreria.getCategoriasOnCsv();
+		Categoria[] categoriasA= libreria.darCategorias();
+		int tamanioActualCat = categoriasA.length;
+		int tamanioCatNew = (tamanioActualCat - tamanioOnCsv);
+		String mensaje = libreria.hayMasCategorias(tamanioOnCsv, tamanioActualCat, tamanioCatNew);
+		JOptionPane.showMessageDialog(this, mensaje, "Aviso", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
