@@ -255,6 +255,23 @@ public class InterfazLibreria extends JFrame
 			}
 		}
 	}
+	public void cambiarNombre() {
+		String nombreCategoria= JOptionPane.showInputDialog(this, "Escriba el nombre de la clase que quiere cambiar", "nombreCategoria");
+		String nombreNuevo=JOptionPane.showInputDialog(this, "Escriba el nuevo nombre para la clase", "nombreNuevo");
+	
+		if (nombreCategoria != null && nombreNuevo!= null)
+		{
+			
+			try {
+				this.libreria.cambiarNombreCategoria(nombreNuevo, nombreCategoria);
+			}
+			catch(Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Error",JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+		}
+		
+	}
 
 	/**
 	 * Le pide al usuario el nombre de un autor y le informa en qué categorías hay

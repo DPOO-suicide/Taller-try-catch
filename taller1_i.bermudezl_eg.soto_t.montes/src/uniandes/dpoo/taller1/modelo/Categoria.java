@@ -149,7 +149,13 @@ public class Categoria {
 		}
 		return librosAutor;
 	}
-
+	public void cambiaarNombre(String nombreAutor) {
+		this.nombre=nombreAutor;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
 	// ************************************************************************
 	// Métodos sobrecargados
 	// ************************************************************************
@@ -161,5 +167,6 @@ public class Categoria {
 	public String toString() {
 		return nombre;
 	}
+	
 
 }
